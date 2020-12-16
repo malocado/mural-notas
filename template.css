@@ -72,7 +72,7 @@
     padding-top: 20px;
 }
 
-.botao {
+#botao {
     background-color: #454AB9;
     padding: 5px 10px;
     display: block;
@@ -89,7 +89,7 @@
     border-radius: 2px;
 }
 
-.botao:active {
+#botao:active {
     background-color: indigo;
     box-shadow: none;
 }
@@ -109,7 +109,7 @@
 #container-mural div {
     width: 200px;
     height: 250px;
-    background-color: #444;
+    background-color: rgb(218, 216, 241);
     margin: 10px;
     margin-bottom: 20px;
     padding: 15px;
@@ -119,4 +119,5 @@
 #container-mural div span {
     display: inline-block;
     margin: 10px;
+    font-weight: bold;
 }
