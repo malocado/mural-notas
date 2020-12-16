@@ -12,6 +12,10 @@ btnElement.onclick = salvarNota;
 // Funções para adicionar a nova nota
 
 function salvarNota() {
+    
+    // Validação se os campos não estão vazios
+    if (assuntoElement.value === '' || conteudoElement.value === '')
+        return alert('Digite o assunto e o conteúdo');
 
     // Leitura do assunto e do conteúdo e limpeza dos campos
     const assunto = assuntoElement.value;
