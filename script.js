@@ -9,36 +9,80 @@ const muralElement = document.querySelector('#container-mural');
 
 btnElement.onclick = salvarNota;
 
-// Funções para adicionar a nova nota
+// ------- Recuperando notas existentes no localstorage e renderizando-as ---------- //
+
+let notas = JSON.parse(localStorage.getItem('list_notas')) || [];
+renderizar();
+
+// ------------  Funções -----------------------------------------------------------//
+
+function renderizar() {
+
+    // Limpando o mural antes de renderizar as notas existentes
+    muralElement.innerHTML = '';
+
+    notas.forEach(nota => {
+
+        // Criação dos elementos que serão inseridos na tela
+        const div = document.createElement('div');
+        const spanAssunto = document.createElement('span');
+        const spanConteudo = document.createElement('span');
+        const assuntoText = document.createTextNode(nota.assunto);
+        const conteudoText = document.createTextNode(nota.conteudo);
+        const excluirText = document.createTextNode('x');
+        const btnExcluir = document.createElement('a');
+        btnExcluir.setAttribute('href', '#');
+
+        // Função do botão excluir
+        const posicao = notas.indexOf(nota);
+        btnExcluir.setAttribute('onclick', `removerNota(${posicao})`)
+        
+
+        // Preenchendo as spans e estilização do texto
+        btnExcluir.appendChild(excluirText);
+        spanAssunto.appendChild(assuntoText);
+        spanConteudo.appendChild(conteudoText);
+
+        spanAssunto.style.fontSize = '1.2em';
+        spanAssunto.style.textAlign = 'center';
+
+        // Preenchendo a div, identificando e postando no mural
+        div.appendChild(btnExcluir);
+        div.appendChild(spanAssunto);
+        div.appendChild(spanConteudo);
+        muralElement.appendChild(div);
+    });
+
+}
 
 function salvarNota() {
-    
     // Validação se os campos não estão vazios
     if (assuntoElement.value === '' || conteudoElement.value === '')
         return alert('Digite o assunto e o conteúdo');
 
+
     // Leitura do assunto e do conteúdo e limpeza dos campos
     const assunto = assuntoElement.value;
     const conteudo = conteudoElement.value;
-
     assuntoElement.value = '';
     conteudoElement.value = '';
 
-    // Criação dos elementos que serão inseridos na tela
-    const div = document.createElement('div');
-    const spanAssunto = document.createElement('span');
-    const spanConteudo = document.createElement('span');
-    const assuntoText = document.createTextNode(assunto);
-    const conteudoText = document.createTextNode(conteudo);
+    // Adicionando a nova nota na lista
+    const nota = { assunto: assunto, conteudo: conteudo };
+    notas.push(nota);
 
-    // Preenchendo as spans e a div e estilização do texto
-    spanAssunto.appendChild(assuntoText);
-    spanConteudo.appendChild(conteudoText);
-    
-    spanAssunto.style.fontSize = '1.2em';
-    spanAssunto.style.textAlign = 'center';
+    renderizar();
+    salvarNoStorage();
+}
 
-    div.appendChild(spanAssunto);
-    div.appendChild(spanConteudo);
-    muralElement.appendChild(div);
+function removerNota(posicao){
+    notas.splice(posicao, 1);
+    renderizar();
+    salvarNoStorage();
+}
+
+// ----------- Salvando no localstorage --------------
+
+function salvarNoStorage() {
+    localStorage.setItem('list_notas', JSON.stringify(notas));
 }
